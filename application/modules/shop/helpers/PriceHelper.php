@@ -66,7 +66,7 @@ class PriceHelper
     {
         $price = 0;
         foreach ($order->items as $item) {
-            $price += $item->total_price;
+            $price += $item->total_price * $item->quantity;
         }
 
         $cacheKey = 'PriceHelper::getOrderPrice'
@@ -105,6 +105,7 @@ class PriceHelper
                 )
             );
         }
+        /* @var SpecialPriceList $specialPriceRow */
         foreach ($specialPriceList as $specialPriceRow) {
             $class = $specialPriceRow->class;
             $handler = $specialPriceRow->handler;
