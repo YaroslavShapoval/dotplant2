@@ -174,7 +174,8 @@ JSCODE;
                                 'data' => \app\components\Helper::getModelMap(
                                     \app\modules\shop\models\OrderStage::className(),
                                     'id',
-                                    'name_short'
+                                    'name_short',
+                                    true, true
                                 ),
                                 'displayValue' => $model->stage !== null ? Html::tag(
                                     'span',
@@ -460,7 +461,7 @@ JSCODE;
                 <?php if ($model->specialPriceObjects): ?>
                     <?php foreach($model->specialPriceObjects as $specialPriceObject): ?>
                         <tr>
-                            <td colspan="3"><?=Html::encode($specialPriceObject->name)?></td>
+                            <td colspan="3"><?=Yii::t('app', Html::encode($specialPriceObject->name))?></td>
                             <td colspan="2"><?=Yii::$app->formatter->asDecimal($specialPriceObject->price, 2)?></td>
                         </tr>
                     <?php endforeach; ?>

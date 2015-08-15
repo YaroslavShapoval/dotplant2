@@ -53,7 +53,7 @@
                         if ($model === null || $model->paymentType === null) {
                             return null;
                         }
-                        return $model->paymentType->name;
+                        return Yii::t('app', $model->paymentType->name);
                     },
                 ],
 
