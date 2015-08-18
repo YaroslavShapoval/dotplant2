@@ -66,7 +66,7 @@ class PriceHelper
     {
         $price = 0;
         foreach ($order->items as $item) {
-            $price += $item->total_price * $item->quantity;
+            $price += $item->total_price;
         }
 
         $cacheKey = 'PriceHelper::getOrderPrice'

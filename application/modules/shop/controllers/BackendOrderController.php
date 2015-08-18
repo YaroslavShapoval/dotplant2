@@ -428,7 +428,7 @@ class BackendOrderController extends BackendController
         Yii::$app->response->format = Response::FORMAT_JSON;
         /** @var OrderItem $orderItem */
         $orderItem = OrderItem::findOne($id);
-        if (!$orderItem->load(Yii::$app->request->post()) || !$orderItem->save(true, ['quantity'])
+        if (!$orderItem->load(Yii::$app->request->post()) || !$orderItem->save()
             || !$orderItem->order->calculate(true)
         ) {
             return [
