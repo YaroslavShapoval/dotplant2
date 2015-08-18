@@ -736,7 +736,11 @@ class BackendOrderController extends BackendController
             ->select('id, type')
             ->where(['customer_id' => $customer_id])
             ->asArray();
-        $result['results'] = array_merge(array_values($query->all()), $result['results']);
+
+        $result['results'] = array_merge(
+            array_values( Helper::translateArray($query->all(), ['type']) ),
+            $result['results']
+        );
 
         if (!empty($result['results']) && 'simple' === $template) {
             $result['cards'] = array_reduce($result['results'],

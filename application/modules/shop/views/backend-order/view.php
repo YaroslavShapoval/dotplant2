@@ -61,8 +61,9 @@ if ($sum_transactions < $model->total_price):
             'app',
             'Total sum of transactions is {sum} which is lower then order\'s total price {order}',
             [
-                'sum' => $sum_transactions,
-                'order' => $model->total_price,
+                'sum' => Yii::$app->formatter->asDecimal($sum_transactions, 2),
+                // TODO check total price calculation
+                'order' => Yii::$app->formatter->asDecimal(PriceHelper::getOrderPrice($model), 2),
             ]
         );
         ?>
@@ -132,7 +133,7 @@ JSCODE;
                 </td>
             </tr>
             <tr>
-                <th><?=$model->getAttributeLabel('manager')?></th>
+                <th><?= Yii::t('app', $model->getAttributeLabel('manager')) ?></th>
                 <td>
                     <?=
                     $orderIsImmutable
@@ -179,7 +180,7 @@ JSCODE;
                                 ),
                                 'displayValue' => $model->stage !== null ? Html::tag(
                                     'span',
-                                    $model->stage->name_short
+                                    Yii::t('app', $model->stage->name_short)
                                 ) : Html::tag('em', Yii::t('yii', '(not set)')),
                                 'formOptions' => [
                                     'action' => ['update-stage', 'id' => $model->id],
@@ -203,11 +204,12 @@ JSCODE;
                                 'data' => \app\components\Helper::getModelMap(
                                     \app\modules\shop\models\PaymentType::className(),
                                     'id',
-                                    'name'
+                                    'name',
+                                    true, true
                                 ),
                                 'displayValue' => $model->paymentType !== null ? Html::tag(
                                     'span',
-                                    $model->paymentType->name
+                                    Yii::t('app', $model->paymentType->name)
                                 ) : Html::tag('em', Yii::t('yii', '(not set)')),
                                 'formOptions' => [
                                     'action' => ['update-payment-type', 'id' => $model->id],
@@ -336,6 +338,7 @@ JSCODE;
         <?php
         $_jsTemplateResultFunc = <<< 'JSCODE'
 function (data) {
+    console.log(data);
     if (data.loading) return data.text;
     var tpl = '<div class="s2contragent-result">' +
         '<strong>' + (data.type || '') + '</strong>' +
@@ -362,7 +365,9 @@ function (term, page) {
 }
 JSCODE;
         echo \app\backend\widgets\Select2Ajax::widget([
-            'initialData' => [$model->contragent_id => null !== $model->contragent ? $model->contragent->type : 'New contragent'],
+            'initialData' => [$model->contragent_id => null !== $model->contragent
+                ? Yii::t('app', $model->contragent->type)
+                : Yii::t('app', 'New contragent')],
             'model' => $model,
             'modelAttribute' => 'contragent_id',
             'form' => $form,
